@@ -1,0 +1,72 @@
+import 'dart:io';
+
+import 'package:desktop_drop/desktop_drop.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:get/get.dart';
+
+import '../utils/sp_util.dart';
+import 'decode_xlog_file_state.dart';
+
+class DecodeXlogFileLogic extends GetxController {
+  final DecodeXlogFileState state = DecodeXlogFileState();
+
+  void decodeXlogFile() {
+    //TODO: 调用python脚本
+    if (state.pyFilePath.value.isEmpty || state.xlogFilePath.value.isEmpty) {
+      SmartDialog.showToast('请选择解码文件和xlog文件');
+      return;
+    }
+
+    if (!state.pyFilePath.value.endsWith('.py') || !state.xlogFilePath.value.endsWith('.xlog')) {
+      SmartDialog.showToast('请选择正确的解码文件和xlog文件');
+      return;
+    }
+
+    onDecodeXlogFile().then((value) {});
+  }
+
+  Future<void> onDecodeXlogFile() async {
+    if (state.pyFilePath.value.isEmpty || state.xlogFilePath.value.isEmpty) {
+      SmartDialog.showToast('请选择解码文件和xlog文件');
+      return;
+    }
+
+    try {
+      final whichResult = await Process.run('which', ['python3']);
+      print(whichResult.stdout.toString());
+      if (whichResult.exitCode != 0) {
+        throw Exception('Python 未安装');
+      }
+      final pythonPath = whichResult.stdout.toString().trim();
+
+      final result = await Process.run(pythonPath, [state.pyFilePath.value, state.xlogFilePath.value]);
+      print("result == ${result.stdout} ${result.stderr}");
+      if (result.exitCode == 0) {
+        SmartDialog.showToast('解码成功: ${result.stdout}');
+      } else {
+        SmartDialog.showToast('解码失败: ${result.stderr}');
+      }
+    } catch (e) {
+      print("e == $e");
+      SmartDialog.showToast('执行错误: $e');
+    }
+  }
+
+  void selectedPyFile(DropDoneDetails details) async {
+    try {
+      // 处理拖放的文件路径
+      final files = details.files;
+      if (files.isNotEmpty) {
+        state.pyFilePath.value = files[0].path;
+        File(files[0].path).exists().then((value) {
+          state.pyFileExist.value = value;
+        });
+        SpUtil().saveString(SpUtil.keyXlogPyFilePath, files[0].path);
+      }
+    } catch (e) {
+      // 处理非文件拖放或其他错误
+      SmartDialog.showToast('请拖放有效的文件');
+    }
+  }
+}

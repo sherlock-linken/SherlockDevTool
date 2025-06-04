@@ -1,4 +1,4 @@
-package com.example.untitled
+package com.example.sherlockdevtool
 
 import io.flutter.embedding.android.FlutterActivity
 
