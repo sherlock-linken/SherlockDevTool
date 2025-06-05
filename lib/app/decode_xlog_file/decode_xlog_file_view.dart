@@ -100,18 +100,7 @@ class DecodeXlogFileComponent extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
 
                         children: [
-                          GestureDetector(
-                            onTap: () async {
-                              FilePickerResult? result = await FilePicker.platform.pickFiles(
-                                type: FileType.custom,
-                                allowedExtensions: ['xlog'],
-                              );
-                              if (result != null) {
-                                state.pyFilePath.value = result.files.single.path!;
-                              }
-                            },
-                            child: Text("当前xlog文件路径："),
-                          ),
+                          Text("当前xlog文件路径："),
 
                           Flexible(
                             child: Obx(() {
@@ -124,6 +113,23 @@ class DecodeXlogFileComponent extends StatelessWidget {
                   ),
 
                   SizedBox(height: 20),
+
+                  ElevatedButton(
+                    onPressed: () async {
+                      FilePickerResult? result = await FilePicker.platform.pickFiles(
+                        initialDirectory: "/Users/sherlock/Downloads",
+                        type: FileType.custom,
+                        allowedExtensions: ['xlog'],
+                      );
+                      if (result != null) {
+                        state.xlogFilePath.value = result.files.single.path!;
+                        SpUtil().saveString(SpUtil.keyXlogPyFilePath, result.files.single.path!);
+                      }
+                    },
+                    child: Text('选择xlog文件'),
+                  ),
+
+                  SizedBox(height: 20,),
 
                   //开始解码按钮
                   ElevatedButton(

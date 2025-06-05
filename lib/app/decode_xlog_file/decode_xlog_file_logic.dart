@@ -23,7 +23,20 @@ class DecodeXlogFileLogic extends GetxController {
       return;
     }
 
-    onDecodeXlogFile().then((value) {});
+    onDecodeXlogFile().then((value) async{
+      print("解析完成 ${Platform.isMacOS}");
+      var dir = Directory(state.xlogFilePath.value.substring(0, state.xlogFilePath.value.lastIndexOf('/')));
+      if (Platform.isMacOS) {
+        await Process.run('open', [dir.path]); // macOS: open 命令
+      } else if (Platform.isWindows) {
+        await Process.run('explorer', [dir.path]); // Windows: explorer 命令
+      } else if (Platform.isLinux) {
+        await Process.run('xdg-open', [dir.path]); // Linux: xdg-open
+      } else {
+        throw UnsupportedError('Unsupported platform');
+      }
+
+    });
   }
 
   Future<void> onDecodeXlogFile() async {
