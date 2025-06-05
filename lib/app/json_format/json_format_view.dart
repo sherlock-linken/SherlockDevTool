@@ -13,30 +13,73 @@ class JsonFormatComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: AppColor.lightScaffoldBackgroundColor, body: Container(color: AppColor.test2,
-    child: Column(
-
+    return Scaffold(
+      backgroundColor: AppColor.lightScaffoldBackgroundColor,
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: EdgeInsets.all(12),
+              child: TextField(
+                controller: logic.inputController,
+                textAlignVertical: TextAlignVertical.top,
+                maxLines: null,
+                expands: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(), // 边框样式
+                  hintText: '请输入JSON内容', // 提示文本
+                  labelText: 'JSON输入', // 标签文本
+                ),
+                keyboardType: TextInputType.multiline, // 键盘类型设置为多行
+              ),
+            ),
+          ),
 
-          Row(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
 
-              Text("当前解码文件路径："),
+              ElevatedButton(
+                onPressed: () {
+                  logic.formatJson();
+                },
+                child: Text(">>格式化>>"),
+              ),
 
-              Text("asdfasdfasdf")
+              SizedBox(height: 100,),
 
+
+              ElevatedButton(
+                onPressed: () {
+                  logic.justCorrectString();
+                },
+                child: Text(">>整理json>>"),
+              ),
             ],
-          )
+          ),
 
-
-
-
-
-      ],
-
-    )
-
-
-      ,));
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: EdgeInsets.all(12),
+              child: TextField(
+                textAlignVertical: TextAlignVertical.top,
+                controller: logic.outputController,
+                maxLines: null,
+                expands: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(), // 边框样式
+                  hintText: '请输入JSON内容', // 提示文本
+                  labelText: 'JSON输出', // 标签文本
+                ),
+                keyboardType: TextInputType.multiline, // 键盘类型设置为多行
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
