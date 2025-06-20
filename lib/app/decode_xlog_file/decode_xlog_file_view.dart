@@ -13,7 +13,9 @@ class DecodeXlogFileComponent extends StatelessWidget {
   DecodeXlogFileComponent({Key? key}) : super(key: key);
 
   final DecodeXlogFileLogic logic = Get.put(DecodeXlogFileLogic());
-  final DecodeXlogFileState state = Get.find<DecodeXlogFileLogic>().state;
+  final DecodeXlogFileState state = Get
+      .find<DecodeXlogFileLogic>()
+      .state;
 
   @override
   Widget build(BuildContext context) {
@@ -58,11 +60,11 @@ class DecodeXlogFileComponent extends StatelessWidget {
                       child: Obx(() {
                         return !state.pyFileExist.value
                             ? Text(
-                              "文件不存在",
-                              softWrap: true,
-                              overflow: TextOverflow.visible,
-                              style: TextStyle(color: AppColor.funRed),
-                            )
+                          "文件不存在",
+                          softWrap: true,
+                          overflow: TextOverflow.visible,
+                          style: TextStyle(color: AppColor.funRed),
+                        )
                             : SizedBox();
                       }),
                     ),
@@ -113,6 +115,22 @@ class DecodeXlogFileComponent extends StatelessWidget {
                   ),
 
                   SizedBox(height: 20),
+
+                  Obx(() {
+                    return Text(state.tips.value, style: TextStyle(color: AppColor.funRed),);
+                  }),
+
+                  SizedBox(height: 20),
+
+                  ElevatedButton(
+                    onPressed: () async {
+                      logic.test();
+                    },
+                    child: Text('test'),
+                  ),
+
+                  SizedBox(height: 20),
+
 
                   ElevatedButton(
                     onPressed: () async {

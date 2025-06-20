@@ -19,4 +19,7 @@ class DecodeXlogFileState {
   final RxBool pyFileExist = true.obs;
 
   final RxString xlogFilePath = "".obs;
+
+  final RxString tips = "".obs;
+
 }

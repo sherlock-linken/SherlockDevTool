@@ -17,6 +17,7 @@ class AppColor {
   static const Color test3 = Color(0x330000FF);
 
   static const Color tabColor = Color(0xFF314055);
+  static const Color tabBg = Color(0x33ecf0f5);
 
   // 主色调
   static const Color mainC = Color(0xFF1AC2FF);

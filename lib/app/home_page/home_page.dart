@@ -23,14 +23,16 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(
-          "Sherlock Dev Tool",
+          "Sherlock Dev Tool v1.0.0",
           style: TextStyle(color: Color.fromARGB(255, 355, 33, 33), fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
       body: Center(
         child: Row(
           children: [
-            SizedBox(
+            // 左侧导航栏
+            Container(
+              color: AppColor.mid6,
               width: 150,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -67,6 +69,59 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ),
+
+                  Divider(height: 1, color: AppColor.mid2),
+
+                  Container(
+                    height: 50,
+                    alignment: Alignment.center,
+                    color: state.tabBgColor,
+                    child: GestureDetector(
+                      onTap: () {
+                        state.currentIndex.value = 1;
+                      },
+                      child: Text(
+                        'svga预览',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColor.lText1),
+                      ),
+                    ),
+                  ),
+
+                  Divider(height: 1, color: AppColor.mid2),
+
+                  Container(
+                    height: 50,
+                    alignment: Alignment.center,
+                    color: state.tabBgColor,
+                    child: GestureDetector(
+                      onTap: () {
+                        state.currentIndex.value = 1;
+                      },
+                      child: Text(
+                        'adb命令',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColor.lText1),
+                      ),
+                    ),
+                  ),
+
+                  Divider(height: 1, color: AppColor.mid2),
+
+                  Container(
+                    height: 50,
+                    alignment: Alignment.center,
+                    color: state.tabBgColor,
+                    child: GestureDetector(
+                      onTap: () {
+                        state.currentIndex.value = 1;
+                      },
+                      child: Text(
+                        '设置',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColor.lText1),
+                      ),
+                    ),
+                  ),
+
+
                 ],
               ),
             ),

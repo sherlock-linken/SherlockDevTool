@@ -46,12 +46,7 @@ class DecodeXlogFileLogic extends GetxController {
     }
 
     try {
-      final whichResult = await Process.run('which', ['python3']);
-      print(whichResult.stdout.toString());
-      if (whichResult.exitCode != 0) {
-        throw Exception('Python 未安装');
-      }
-      final pythonPath = whichResult.stdout.toString().trim();
+      final pythonPath = "/opt/anaconda3/bin/python3";
 
       final result = await Process.run(pythonPath, [state.pyFilePath.value, state.xlogFilePath.value]);
       print("result == ${result.stdout} ${result.stderr}");
@@ -81,5 +76,15 @@ class DecodeXlogFileLogic extends GetxController {
       // 处理非文件拖放或其他错误
       SmartDialog.showToast('请拖放有效的文件');
     }
+  }
+
+  Future<void> test() async {
+    final whichResult = await Process.run('which', ['python3']);
+    print(whichResult.stdout.toString());
+    if (whichResult.exitCode != 0) {
+      throw Exception('Python 未安装');
+    }
+    state.tips.value = whichResult.stdout.toString().trim();
+
   }
 }

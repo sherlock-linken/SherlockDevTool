@@ -23,7 +23,6 @@ class JsonFormatLogic extends GetxController {
   void formatJson() {
     var jsonString = _correctString(inputController.text);
 
-
     try {
       var json = jsonDecode(jsonString);
       var formattedJson = encoder.convert(json);
@@ -33,6 +32,15 @@ class JsonFormatLogic extends GetxController {
       outputController.text = e.toString();
       toastMsg(e.toString());
     }
+  }
+
+  void formatUrl() {
+    var jsonString = inputController.text;
+
+    jsonString = jsonString.trim().replaceFirst("?","\n\n");
+    jsonString = jsonString.replaceAll("&","\n");
+
+    outputController.text = jsonString;
   }
 
   void justCorrectString() {
