@@ -7,7 +7,7 @@ class DecodeXlogFileState {
   DecodeXlogFileState() {
     ///Initialize variables
 
-    SpUtil().getString(SpUtil.keyXlogPyFilePath).then((path) {
+    SpUtil().getXlogPyFilePath().then((path) {
       pyFilePath.value = path;
       File(path).exists().then((value) {
         pyFileExist.value = value;

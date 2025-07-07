@@ -11,7 +11,18 @@ class SpUtil {
   SpUtil._internal();
 
 
+  //xlog解析脚本文件路径
   static const String keyXlogPyFilePath = "keyXlogPyFilePath";
+  Future<String> getXlogPyFilePath() async {
+    return await getString(keyXlogPyFilePath);
+  }
+
+  Future<void> saveXlogPyFilePath(String path) async {
+    return await saveString(keyXlogPyFilePath, path);
+  }
+
+
+
 
 
   Future<void> saveString(String key, String value) async {

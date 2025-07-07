@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:desktop_drop/desktop_drop.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
@@ -23,7 +24,7 @@ class DecodeXlogFileLogic extends GetxController {
       return;
     }
 
-    onDecodeXlogFile().then((value) async{
+    onDecodeXlogFile().then((value) async {
       print("解析完成 ${Platform.isMacOS}");
       var dir = Directory(state.xlogFilePath.value.substring(0, state.xlogFilePath.value.lastIndexOf('/')));
       if (Platform.isMacOS) {
@@ -35,10 +36,10 @@ class DecodeXlogFileLogic extends GetxController {
       } else {
         throw UnsupportedError('Unsupported platform');
       }
-
     });
   }
 
+  /// 开始解码
   Future<void> onDecodeXlogFile() async {
     if (state.pyFilePath.value.isEmpty || state.xlogFilePath.value.isEmpty) {
       SmartDialog.showToast('请选择解码文件和xlog文件');
@@ -61,7 +62,8 @@ class DecodeXlogFileLogic extends GetxController {
     }
   }
 
-  void selectedPyFile(DropDoneDetails details) async {
+  /// 获取拖放的文件路径
+  void getDropPyFile(DropDoneDetails details) async {
     try {
       // 处理拖放的文件路径
       final files = details.files;
@@ -70,11 +72,22 @@ class DecodeXlogFileLogic extends GetxController {
         File(files[0].path).exists().then((value) {
           state.pyFileExist.value = value;
         });
-        SpUtil().saveString(SpUtil.keyXlogPyFilePath, files[0].path);
+        SpUtil().saveXlogPyFilePath(files[0].path);
       }
     } catch (e) {
       // 处理非文件拖放或其他错误
       SmartDialog.showToast('请拖放有效的文件');
+    }
+  }
+
+  void selectPyFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['py'],
+    );
+    if (result != null) {
+      state.pyFilePath.value = result.files.single.path!;
+      SpUtil().saveXlogPyFilePath(state.pyFilePath.value);
     }
   }
 
@@ -85,6 +98,5 @@ class DecodeXlogFileLogic extends GetxController {
       throw Exception('Python 未安装');
     }
     state.tips.value = whichResult.stdout.toString().trim();
-
   }
 }

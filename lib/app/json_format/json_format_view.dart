@@ -40,9 +40,6 @@ class JsonFormatComponent extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
-
-
               ElevatedButton(
                 onPressed: () {
                   logic.formatJson();
@@ -50,7 +47,7 @@ class JsonFormatComponent extends StatelessWidget {
                 child: Text(">>格式化>>"),
               ),
 
-              SizedBox(height: 100,),
+              SizedBox(height: 20),
 
               ElevatedButton(
                 onPressed: () {
@@ -59,8 +56,7 @@ class JsonFormatComponent extends StatelessWidget {
                 child: Text(">>Url整理>>"),
               ),
 
-              SizedBox(height: 20,),
-
+              SizedBox(height: 20),
 
               ElevatedButton(
                 onPressed: () {

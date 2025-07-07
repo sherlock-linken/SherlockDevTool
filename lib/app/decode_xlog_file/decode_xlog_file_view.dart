@@ -10,12 +10,10 @@ import 'decode_xlog_file_logic.dart';
 import 'decode_xlog_file_state.dart';
 
 class DecodeXlogFileComponent extends StatelessWidget {
-  DecodeXlogFileComponent({Key? key}) : super(key: key);
+  DecodeXlogFileComponent({super.key});
 
   final DecodeXlogFileLogic logic = Get.put(DecodeXlogFileLogic());
-  final DecodeXlogFileState state = Get
-      .find<DecodeXlogFileLogic>()
-      .state;
+  final DecodeXlogFileState state = Get.find<DecodeXlogFileLogic>().state;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +24,7 @@ class DecodeXlogFileComponent extends StatelessWidget {
           //解码文件
           DropTarget(
             onDragDone: (details) async {
-              logic.selectedPyFile(details);
+              logic.getDropPyFile(details);
             },
             child: Container(
               color: AppColor.test1,
@@ -37,15 +35,10 @@ class DecodeXlogFileComponent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
 
                   children: [
+                    //当前解码文件
                     GestureDetector(
                       onTap: () async {
-                        FilePickerResult? result = await FilePicker.platform.pickFiles(
-                          type: FileType.custom,
-                          allowedExtensions: ['py'],
-                        );
-                        if (result != null) {
-                          state.pyFilePath.value = result.files.single.path!;
-                        }
+                        logic.selectPyFile();
                       },
                       child: Text("当前解码文件路径："),
                     ),
@@ -60,11 +53,11 @@ class DecodeXlogFileComponent extends StatelessWidget {
                       child: Obx(() {
                         return !state.pyFileExist.value
                             ? Text(
-                          "文件不存在",
-                          softWrap: true,
-                          overflow: TextOverflow.visible,
-                          style: TextStyle(color: AppColor.funRed),
-                        )
+                              "文件不存在",
+                              softWrap: true,
+                              overflow: TextOverflow.visible,
+                              style: TextStyle(color: AppColor.funRed),
+                            )
                             : SizedBox();
                       }),
                     ),
@@ -117,7 +110,7 @@ class DecodeXlogFileComponent extends StatelessWidget {
                   SizedBox(height: 20),
 
                   Obx(() {
-                    return Text(state.tips.value, style: TextStyle(color: AppColor.funRed),);
+                    return Text(state.tips.value, style: TextStyle(color: AppColor.funRed));
                   }),
 
                   SizedBox(height: 20),
@@ -131,7 +124,6 @@ class DecodeXlogFileComponent extends StatelessWidget {
 
                   SizedBox(height: 20),
 
-
                   ElevatedButton(
                     onPressed: () async {
                       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -141,13 +133,12 @@ class DecodeXlogFileComponent extends StatelessWidget {
                       );
                       if (result != null) {
                         state.xlogFilePath.value = result.files.single.path!;
-                        SpUtil().saveString(SpUtil.keyXlogPyFilePath, result.files.single.path!);
                       }
                     },
                     child: Text('选择xlog文件'),
                   ),
 
-                  SizedBox(height: 20,),
+                  SizedBox(height: 20),
 
                   //开始解码按钮
                   ElevatedButton(
